@@ -1,0 +1,3 @@
+ajustar as permissões com o token
+
+integrar com banco de dados não relacional, cada vez que atualiza o banco está perdendo as informações, por que está num servidor local.

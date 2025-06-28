@@ -1,4 +1,3 @@
-
 let musicas = [
     {
         id: 1,
@@ -20,6 +19,33 @@ let musicas = [
     }
 ];
 
+const jwt = require('jsonwebtoken');
+const users = []
+
+exports.registroUsuario = (req, res) => {
+    const { nome, email, senha } = req.body;
+    if (!nome || !email || !senha) {
+        return res.status(400).json({ message: "Todos os campos são obrigatórios" });
+    }
+    users.push({ nome, email, senha });
+    res.status(201).json({ message: "Usuário registrado com sucesso" });
+}
+
+//garante que todos os campos serão preenchidos
+exports.loginUsuario = (req, res) => {
+    const { nome, senha } = req.body;
+    if (!nome || !senha) {
+        return res.status(400).json({ message: "Todos os campos são obrigatórios" });
+    }
+    // verifica senha e nome do usuário
+    const user = users.find(user => user.senha === senha && user.nome === nome);
+    if (user) {
+        const token = jwt.sign({ nome, email:user.email }, "segredoJWT", { expiresIn: '1h' });
+        return res.status(200).json({ message: "Usuário autenticado com sucesso", token });
+    } else {
+        return res.status(401).json({ message: "Usuário ou senha inválidos" });
+    }
+}
 // Função para obter todas as músicas
 // Exportando a função para ser usada em outros arquivos
 exports.getMusicas = (req, res) => {
@@ -62,3 +88,16 @@ exports.addMusica = (req, res) => {
     musicas.push(newMusica);
     res.status(201).json(newMusica);
 };
+
+exports.deleteMusica = (req, res) => {
+    const id = parseInt(req.params.id);
+    const index = musicas.findIndex(m => m.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({ message: "Música não encontrada" });
+    }
+
+    musicas.splice(index, 1);
+    res.status(204).json({ message: "Música deletada com sucesso" });
+}
+

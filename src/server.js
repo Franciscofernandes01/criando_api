@@ -1,8 +1,13 @@
+// Arquivo: src/server.js
+// Importando o Express e as rotas definidas no arquivo musicas_routes.js
 const express = require('express');
 const routes = require('./routes/musicas_routes');
-const app = require('./app');
+const app = require('./app');// Importando o app do arquivo app.js
 
-app.use(routes);
+app.use(routes);// Usando as rotas definidas no arquivo musicas_routes.js
+
+// Definindo a porta onde o servidor irá rodar
+// A porta 5060 foi escolhida, mas você pode alterar para qualquer outra porta disponível
 const PORT = 5060;
 
 app.listen(PORT, () => {

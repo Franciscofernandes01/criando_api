@@ -1,10 +1,14 @@
 const express = require('express');
 const routes = express.Router();
 const musicasController = require('../controllers/controle_musica');
+const autenticador = require('../middlewares/authenticador');
 
-routes.get('/', musicasController.getMusicas);
-routes.get('/:id', musicasController.getMusicasporId);
-routes.post('/', musicasController.addMusica);
+routes.get('/', autenticador, musicasController.getMusicas);
+routes.get('/:id', autenticador, musicasController.getMusicasporId);
+routes.post('/', autenticador, musicasController.addMusica);
+routes.delete('/:id', autenticador, musicasController.deleteMusica);
+routes.post('/login', musicasController.loginUsuario);
+routes.post('/registro', musicasController.registroUsuario);
 
 module.exports = routes;
 // Exportando as rotas para serem usadas em outros arquivos
